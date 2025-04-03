@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Admin\Article\ArticlesListApiResource;
 use App\Models\Article;
 
 class ArticleController extends Controller
@@ -14,8 +15,6 @@ class ArticleController extends Controller
     {
         $articles = Article::with(['user'])->get();
 
-        return response()->json([
-            'data' => $articles
-        ]);
+        return ArticlesListApiResource::collection($articles);
     }
 }
