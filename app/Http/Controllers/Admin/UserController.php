@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -28,7 +29,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'first_name' => ['required','string','min:1','max:255'],
+            'last_name' => ['required','string','min:1','max:255'],
+            'email' => ['required','email','max:255','unique:users,email'],
+            'password' => ['required','string','min:8','max:255']
+        ]);
+
+        if($validator->fails())
+            return response()->json([
+                'errors' => $validator->errors()
+            ],422);
     }
 
     /**
