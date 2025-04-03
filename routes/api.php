@@ -15,3 +15,5 @@ Route::get('/test',function (){
        "numbers" => [1,2,3,4,5]
     ]);
 });
+
+require_once base_path('routes/admin.php');
