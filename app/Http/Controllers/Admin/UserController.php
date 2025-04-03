@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -12,7 +13,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        return "hi user";
+        $users = User::paginate();
+
+        return response()->json([
+            'data' => $users
+        ]);
     }
 
     /**
@@ -26,9 +31,11 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
-        //
+        return response()->json([
+            'data' => $user
+        ]);
     }
 
     /**
