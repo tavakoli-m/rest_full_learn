@@ -50,18 +50,19 @@ class UserController extends Controller
             $inputs['password'] = Hash::make($inputs['password']);
 
             $user = User::create($inputs);
-
-            return response()->json([
-                "message" => 'User created successfully',
-                "data" => $user
-            ]);
         }
         catch (\Throwable $th){
             app()[ExceptionHandler::class]->report($th);
-            return response()->json([
-                "message" => "Something went wrong. try again later!"
-            ],500);
+            return $this->apiResponse(
+                message: "Something went wrong. try again later!",
+                status: 500
+            );
         }
+
+        return $this->apiResponse(
+            message: 'User created successfully',
+            data: $user
+        );
     }
 
     /**
@@ -129,4 +130,13 @@ class UserController extends Controller
             ],500);
         }
     }
+
+    private function apiResponse($message = null,$data = null,$status = 200)
+    {
+        $body = [];
+        !is_null($message) && $body['message'] = $message;
+        !is_null($data) && $body['data'] = $data;
+        return response()->json($body,$status);
+    }
+
 }
