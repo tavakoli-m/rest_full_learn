@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\ApiRequests\Admin\User\StoreUserApiRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\User\StoreUserRequest;
 use App\Http\Resources\Admin\User\UserDetailsApiResource;
 use App\Http\Resources\Admin\User\UsersListApiResource;
 use App\Models\User;
-use App\RestFulApi\ApiResponseBuilder;
 use App\Services\UserService;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\Request;
@@ -38,7 +37,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserApiRequest $request)
     {
         $result =  $this->userService->registerUser($request->validated());
 
