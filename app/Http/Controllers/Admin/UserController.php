@@ -7,6 +7,7 @@ use App\Http\Resources\Admin\User\UserDetailsApiResource;
 use App\Http\Resources\Admin\User\UsersListApiResource;
 use App\Models\User;
 use App\RestFulApi\ApiResponse;
+use App\RestFulApi\ApiResponseBuilder;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -54,19 +55,11 @@ class UserController extends Controller
         }
         catch (\Throwable $th){
             app()[ExceptionHandler::class]->report($th);
-            return $this->apiResponse(
-                message: "Something went wrong. try again later!",
-                status: 500
-            );
+
+            return (new ApiResponseBuilder())->withMessage('Something went wrong. try again later!')->withStatus(500)->build()->response();
         }
 
-        $response = new ApiResponse();
-        $response->setMessage('User created successfully');
-        $response->setData($user);
-        $response->setAppends([
-            'new' => 'okk'
-        ]);
-        return $response->response();
+        return (new ApiResponseBuilder())->withMessage('User created successfully')->withData($user)->withAppends(['new' => 'okk'])->build()->response();
     }
 
     /**
