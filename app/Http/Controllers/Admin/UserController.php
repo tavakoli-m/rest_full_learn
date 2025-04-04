@@ -40,23 +40,10 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-            $validator = Validator::make($request->all(),[
-                'first_name' => ['required','string','min:1','max:255'],
-                'last_name' => ['required','string','min:1','max:255'],
-                'email' => ['required','email','max:255','unique:users,email'],
-                'password' => ['required','string','min:8','max:255']
-            ]);
+        $result =  $this->userService->registerUser($request->validated());
 
-            if($validator->fails())
-                return response()->json([
-                    'errors' => $validator->errors()
-                ],422);
-
-
-            $result =  $this->userService->registerUser($validator->validated());
-
-            if(!$result->ok)
-                return ApiResponse::class::withMessage('Something went wrong. try again later!')->withStatus(500)->build()->response();
+        if(!$result->ok)
+            return ApiResponse::class::withMessage('Something went wrong. try again later!')->withStatus(500)->build()->response();
 
         return ApiResponse::class::withMessage('User created successfully')->withData($result->data)->build()->response();
     }
