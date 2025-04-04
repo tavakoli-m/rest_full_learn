@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\User\UserDetailsApiResource;
 use App\Http\Resources\Admin\User\UsersListApiResource;
 use App\Models\User;
+use App\RestFulApi\ApiResponse;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -59,10 +60,10 @@ class UserController extends Controller
             );
         }
 
-        return $this->apiResponse(
-            message: 'User created successfully',
-            data: $user
-        );
+        $response = new ApiResponse();
+        $response->setMessage('User created successfully');
+        $response->setData($user);
+        return $response->response();
     }
 
     /**
@@ -130,13 +131,4 @@ class UserController extends Controller
             ],500);
         }
     }
-
-    private function apiResponse($message = null,$data = null,$status = 200)
-    {
-        $body = [];
-        !is_null($message) && $body['message'] = $message;
-        !is_null($data) && $body['data'] = $data;
-        return response()->json($body,$status);
-    }
-
 }
