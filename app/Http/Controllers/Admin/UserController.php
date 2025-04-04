@@ -7,6 +7,7 @@ use App\Http\Resources\Admin\User\UserDetailsApiResource;
 use App\Http\Resources\Admin\User\UsersListApiResource;
 use App\Models\User;
 use App\RestFulApi\ApiResponseBuilder;
+use App\Services\UserService;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -15,6 +16,11 @@ use Illuminate\Validation\Rule;
 use App\RestFulApi\Facades\ApiResponse;
 class UserController extends Controller
 {
+
+    public  function __construct(private UserService $userService)
+    {
+
+    }
     /**
      * Display a listing of the resource.
      */
@@ -33,7 +39,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        try{
             $validator = Validator::make($request->all(),[
                 'first_name' => ['required','string','min:1','max:255'],
                 'last_name' => ['required','string','min:1','max:255'],
@@ -46,19 +51,13 @@ class UserController extends Controller
                     'errors' => $validator->errors()
                 ],422);
 
-            $inputs = $validator->validated();
 
-            $inputs['password'] = Hash::make($inputs['password']);
+            $result =  $this->userService->registerUser($validator->validated());
 
-            $user = User::create($inputs);
-        }
-        catch (\Throwable $th){
-            app()[ExceptionHandler::class]->report($th);
+            if(!$result['ok'])
+                return ApiResponse::class::withMessage('Something went wrong. try again later!')->withStatus(500)->build()->response();
 
-            return ApiResponse::class::withMessage('Something went wrong. try again later!')->withStatus(500)->build()->response();
-        }
-
-        return ApiResponse::class::withMessage('User created successfully')->withData($user)->build()->response();
+        return ApiResponse::class::withMessage('User created successfully')->withData($result['data'])->build()->response();
     }
 
     /**
