@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Base\Traits\HasRules;
+use App\Base\RuleManager\HasRules;
 
 class User extends Authenticatable
 {
@@ -26,7 +26,7 @@ class User extends Authenticatable
         'password',
     ];
 
-    private static $rules = [
+    private static array $baseRules = [
         'first_name' => ['required','string','min:1','max:255'],
         'last_name' => ['required','string','min:1','max:255'],
         'email' => ['required','email','max:255','unique:users,email'],
