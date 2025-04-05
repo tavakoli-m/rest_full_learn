@@ -6,11 +6,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Base\Traits\HasRules;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable,HasRules;
 
 
     /**
@@ -23,6 +24,13 @@ class User extends Authenticatable
         'last_name',
         'email',
         'password',
+    ];
+
+    private static $rules = [
+        'first_name' => ['required','string','min:1','max:255'],
+        'last_name' => ['required','string','min:1','max:255'],
+        'email' => ['required','email','max:255','unique:users,email'],
+        'password' => ['required','string','min:8','max:255']
     ];
 
     /**

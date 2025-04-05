@@ -4,8 +4,9 @@ namespace App\Http\ApiRequests\Admin\User;
 
 use App\Models\User;
 use App\RestFulApi\ApiFormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreUserApiRequest extends ApiFormRequest
+class UpdateUserApiRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,6 +23,9 @@ class StoreUserApiRequest extends ApiFormRequest
      */
     public function rules(): array
     {
-        return User::rules();
+        return User::rules([
+            'email' => ['required','email','max:255',Rule::unique('users','email')->ignore($this->user->id)],
+            'password' => ['nullable','string','min:8','max:255']
+        ]);
     }
 }
