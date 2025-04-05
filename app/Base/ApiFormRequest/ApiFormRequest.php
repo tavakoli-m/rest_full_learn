@@ -1,6 +1,6 @@
 <?php
 
-namespace App\RestFulApi;
+namespace App\Base\ApiFormRequest;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;

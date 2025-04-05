@@ -2,7 +2,7 @@
 
 namespace {{ namespace }};
 
-use App\RestFulApi\ApiFormRequest;
+use App\Base\ApiFormRequest\ApiFormRequest;
 
 class {{ class }} extends ApiFormRequest
 {
