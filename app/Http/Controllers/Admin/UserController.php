@@ -6,12 +6,11 @@ use App\Http\ApiRequests\Admin\User\StoreUserApiRequest;
 use App\Http\ApiRequests\Admin\User\UpdateUserApiRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\User\UserDetailsApiResource;
-use App\Http\Resources\Admin\User\UsersListApiResource;
 use App\Http\Resources\UsersListApiResourceCollection;
+use App\Http\Services\ApiResponse\Facades\ApiResponse;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
-use App\RestFulApi\Facades\ApiResponse;
 class UserController extends Controller
 {
 
@@ -27,9 +26,9 @@ class UserController extends Controller
         $result =  $this->userService->getAllUsers($request->all());
 
         if(!$result->ok)
-            return ApiResponse::class::withMessage('Something went wrong. try again later!')->withStatus(500)->build()->response();
+            return ApiResponse::withMessage('Something went wrong. try again later!')->withStatus(500)->send();
 
-        return ApiResponse::class::withData(new UsersListApiResourceCollection($result->data))->build()->response();
+        return ApiResponse::withData(new UsersListApiResourceCollection($result->data))->send();
     }
 
     /**
@@ -40,9 +39,9 @@ class UserController extends Controller
         $result =  $this->userService->registerUser($request->validated());
 
         if(!$result->ok)
-            return ApiResponse::class::withMessage('Something went wrong. try again later!')->withStatus(500)->build()->response();
+            return ApiResponse::class::withMessage('Something went wrong. try again later!')->withStatus(500)->send();
 
-        return ApiResponse::class::withMessage('User created successfully')->withData($result->data)->build()->response();
+        return ApiResponse::class::withMessage('User created successfully')->withData($result->data)->send();
     }
 
     /**
@@ -54,9 +53,9 @@ class UserController extends Controller
             $result =  $this->userService->getUser($user);
 
             if(!$result->ok)
-                return ApiResponse::class::withMessage('Something went wrong. try again later!')->withStatus(500)->build()->response();
+                return ApiResponse::class::withMessage('Something went wrong. try again later!')->withStatus(500)->send();
 
-            return ApiResponse::class::withData(new UserDetailsApiResource($result->data))->build()->response();
+            return ApiResponse::class::withData(new UserDetailsApiResource($result->data))->send();
         }
     }
 
@@ -68,9 +67,9 @@ class UserController extends Controller
         $result = $this->userService->updateUser($request->validated(),$user);
 
         if(!$result->ok)
-            return ApiResponse::class::withMessage('Something went wrong. try again later!')->withStatus(500)->build()->response();
+            return ApiResponse::class::withMessage('Something went wrong. try again later!')->withStatus(500)->send();
 
-        return ApiResponse::class::withMessage('User updated successfully')->withData($result->data)->build()->response();
+        return ApiResponse::class::withMessage('User updated successfully')->withData($result->data)->send();
     }
 
     /**
@@ -81,8 +80,8 @@ class UserController extends Controller
         $result = $this->userService->deleteUser($user);
 
         if(!$result->ok)
-            return ApiResponse::class::withMessage('Something went wrong. try again later!')->withStatus(500)->build()->response();
+            return ApiResponse::class::withMessage('Something went wrong. try again later!')->withStatus(500)->send();
 
-        return ApiResponse::class::withMessage('User deleted successfully')->build()->response();
+        return ApiResponse::class::withMessage('User deleted successfully')->send();
     }
 }

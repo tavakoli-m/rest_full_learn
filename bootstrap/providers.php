@@ -2,6 +2,6 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    App\Providers\RestFulApiServiceProvider::class,
+    App\Http\Services\ApiResponse\Providers\ApiResponseServiceProvider::class,
     App\Providers\TelescopeServiceProvider::class,
 ];
