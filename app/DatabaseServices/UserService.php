@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services;
+namespace App\DatabaseServices;
 
-use App\Base\DatabaseServiceManger\DatabaseServiceResult;
-use App\Base\DatabaseServiceManger\DatabaseServiceManager;
+use App\DatabaseServices\DatabaseServiceManger\DatabaseServiceManager;
+use App\DatabaseServices\DatabaseServiceManger\DatabaseServiceResult;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 

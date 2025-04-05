@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Base\DatabaseServiceManger;
+namespace App\DatabaseServices\DatabaseServiceManger;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\Facades\DB;
