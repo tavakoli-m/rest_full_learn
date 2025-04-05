@@ -7,6 +7,7 @@ use App\Http\ApiRequests\Admin\User\UpdateUserApiRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\User\UserDetailsApiResource;
 use App\Http\Resources\Admin\User\UsersListApiResource;
+use App\Http\Resources\UsersListApiResourceCollection;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class UserController extends Controller
         if(!$result->ok)
             return ApiResponse::class::withMessage('Something went wrong. try again later!')->withStatus(500)->build()->response();
 
-        return ApiResponse::class::withData(UsersListApiResource::collection($result->data)->resource)->build()->response();
+        return ApiResponse::class::withData(new UsersListApiResourceCollection($result->data))->build()->response();
     }
 
     /**
