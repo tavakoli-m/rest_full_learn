@@ -9,11 +9,7 @@ use App\Http\Resources\Admin\User\UserDetailsApiResource;
 use App\Http\Resources\Admin\User\UsersListApiResource;
 use App\Models\User;
 use App\Services\UserService;
-use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use App\RestFulApi\Facades\ApiResponse;
 class UserController extends Controller
 {
@@ -27,12 +23,12 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $usersQuery = User::query();
-        if($request->has('email'))
-            $usersQuery = $usersQuery->whereEmail($request->get('email'));
+        $result =  $this->userService->getAllUsers($request->all());
 
-        $users = $usersQuery->paginate();
-        return UsersListApiResource::collection($users);
+        if(!$result->ok)
+            return ApiResponse::class::withMessage('Something went wrong. try again later!')->withStatus(500)->build()->response();
+
+        return ApiResponse::class::withData(UsersListApiResource::collection($result->data)->resource)->build()->response();
     }
 
     /**
@@ -53,7 +49,14 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return new UserDetailsApiResource($user);
+        {
+            $result =  $this->userService->getUser($user);
+
+            if(!$result->ok)
+                return ApiResponse::class::withMessage('Something went wrong. try again later!')->withStatus(500)->build()->response();
+
+            return ApiResponse::class::withData(new UserDetailsApiResource($result->data))->build()->response();
+        }
     }
 
     /**
@@ -61,25 +64,12 @@ class UserController extends Controller
      */
     public function update(UpdateUserApiRequest $request, User $user)
     {
-        try{
-            $inputs = $request->validated();
+        $result = $this->userService->updateUser($request->validated(),$user);
 
-            if(isset($inputs['password']))
-                $inputs['password'] = Hash::make($inputs['password']);
+        if(!$result->ok)
+            return ApiResponse::class::withMessage('Something went wrong. try again later!')->withStatus(500)->build()->response();
 
-            $user->update($inputs);
-
-            return response()->json([
-                "message" => 'User Updated successfully',
-                "data" => $user
-            ]);
-        }
-        catch (\Throwable $th){
-            app()[ExceptionHandler::class]->report($th);
-            return response()->json([
-                "message" => "Something went wrong. try again later!"
-            ],500);
-        }
+        return ApiResponse::class::withMessage('User updated successfully')->withData($result->data)->build()->response();
     }
 
     /**
@@ -87,18 +77,11 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        try{
-            $user->delete();
+        $result = $this->userService->deleteUser($user);
 
-            return response()->json([
-                "message" => 'User Deleted successfully',
-            ]);
-        }
-        catch (\Throwable $th){
-            app()[ExceptionHandler::class]->report($th);
-            return response()->json([
-                "message" => "Something went wrong. try again later!"
-            ],500);
-        }
+        if(!$result->ok)
+            return ApiResponse::class::withMessage('Something went wrong. try again later!')->withStatus(500)->build()->response();
+
+        return ApiResponse::class::withMessage('User deleted successfully')->build()->response();
     }
 }
