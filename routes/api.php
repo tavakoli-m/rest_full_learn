@@ -16,4 +16,6 @@ Route::get('/test',function (){
     ]);
 });
 
+Route::post('/login',\App\Http\Controllers\Auth\LoginController::class);
+
 require_once base_path('routes/admin.php');

@@ -43,4 +43,14 @@ class UserService
     {
         return app(ServiceManager::class)(fn() => $user->delete());
     }
+
+    public function loginUser(array $inputs) : ServiceResult
+    {
+        return app(ServiceManager::class)(function() use ($inputs) {
+            if(!auth()->attempt($inputs))
+                return false;
+
+            return auth()->user()->createToken('API TOKEN')->plainTextToken;
+        });
+    }
 }
