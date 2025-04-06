@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DatabaseServices;
+namespace App\Services;
 
 use App\Base\ServiceManager\ServiceManager;
 use App\Base\ServiceManager\ServiceResult;

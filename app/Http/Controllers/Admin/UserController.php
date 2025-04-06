@@ -9,7 +9,7 @@ use App\Http\Resources\Admin\User\UserDetailsApiResource;
 use App\Http\Resources\UsersListApiResourceCollection;
 use App\Http\Services\ApiResponse\Facades\ApiResponse;
 use App\Models\User;
-use App\DatabaseServices\UserService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 class UserController extends Controller
 {
