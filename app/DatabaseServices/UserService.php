@@ -2,35 +2,35 @@
 
 namespace App\DatabaseServices;
 
-use App\DatabaseServices\DatabaseServiceManger\DatabaseServiceManager;
-use App\DatabaseServices\DatabaseServiceManger\DatabaseServiceResult;
+use App\Base\ServiceManager\ServiceManager;
+use App\Base\ServiceManager\ServiceResult;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
 
-    public function getAllUsers(array $inputs) : DatabaseServiceResult
+    public function getAllUsers(array $inputs) : ServiceResult
     {
-        return app(DatabaseServiceManager::class)(function() use ($inputs) {
+        return app(ServiceManager::class)(function() use ($inputs) {
             return User::paginate();
         });
     }
-    public function getUser(User $user) : DatabaseServiceResult
+    public function getUser(User $user) : ServiceResult
     {
-        return app(DatabaseServiceManager::class)(fn() => $user);
+        return app(ServiceManager::class)(fn() => $user);
     }
 
-    public function registerUser(array $inputs) : DatabaseServiceResult
+    public function registerUser(array $inputs) : ServiceResult
     {
-       return app(DatabaseServiceManager::class)(function() use ($inputs) {
+       return app(ServiceManager::class)(function() use ($inputs) {
             $inputs['password'] = Hash::make($inputs['password']);
             return User::create($inputs);
         });
     }
-    public function updateUser(array $inputs,User $user) : DatabaseServiceResult
+    public function updateUser(array $inputs,User $user) : ServiceResult
     {
-       return app(DatabaseServiceManager::class)(function() use ($inputs,$user) {
+       return app(ServiceManager::class)(function() use ($inputs,$user) {
            if(isset($inputs['password']))
                $inputs['password'] = Hash::make($inputs['password']);
            $user->update($inputs);
@@ -39,8 +39,8 @@ class UserService
         });
     }
 
-    public function deleteUser(User $user) : DatabaseServiceResult
+    public function deleteUser(User $user) : ServiceResult
     {
-        return app(DatabaseServiceManager::class)(fn() => $user->delete());
+        return app(ServiceManager::class)(fn() => $user->delete());
     }
 }

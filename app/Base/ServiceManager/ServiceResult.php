@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DatabaseServices\DatabaseServiceManger;
+namespace App\Base\ServiceManager;
 
-class DatabaseServiceResult
+class ServiceResult
 {
     public function __construct(public bool $ok,public mixed $data = null)
     {}

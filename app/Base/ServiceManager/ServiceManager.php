@@ -1,11 +1,11 @@
 <?php
 
-namespace App\DatabaseServices\DatabaseServiceManger;
+namespace App\Base\ServiceManager;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\Facades\DB;
 
-class DatabaseServiceManager
+class ServiceManager
 {
     public function  __invoke(\Closure $action,\Closure $reject = null)
     {
@@ -18,9 +18,9 @@ class DatabaseServiceManager
             DB::rollBack();
             !is_null($reject) && $reject();
             app()[ExceptionHandler::class]->report($th);
-            return new DatabaseServiceResult(false,$th->getMessage());
+            return new ServiceResult(false,$th->getMessage());
         }
 
-        return new DatabaseServiceResult(true,$actionResult);
+        return new ServiceResult(true,$actionResult);
     }
 }
