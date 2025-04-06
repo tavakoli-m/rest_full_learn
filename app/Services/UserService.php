@@ -53,4 +53,11 @@ class UserService
             return auth()->user()->createToken('API TOKEN')->plainTextToken;
         });
     }
+
+    public function logoutUser() : ServiceResult
+    {
+        return app(ServiceManager::class)(function(){
+            return auth()->user()->currentAccessToken()->delete();
+        });
+    }
 }
