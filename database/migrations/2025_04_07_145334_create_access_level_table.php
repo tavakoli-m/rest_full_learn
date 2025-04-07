@@ -21,6 +21,8 @@ return new class extends Migration
         Schema::create('role_user', function (Blueprint $table) {
             $table->foreignId('role_id')->constrained('roles')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
+
+            $table->primary(['role_id', 'user_id']);
         });
 
 
@@ -34,6 +36,8 @@ return new class extends Migration
         Schema::create('permission_role', function (Blueprint $table) {
             $table->foreignId('role_id')->constrained('roles')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('permission_id')->constrained('permissions')->cascadeOnUpdate()->cascadeOnDelete();
+
+            $table->primary(['role_id', 'permission_id']);
         });
     }
 
