@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Permission extends Model
 {
     use HasFactory;
+
+    protected static function booted()
+    {
+        static::created(function ($permission) {
+            Role::where('name','Admin')->first()->permissions()->attach([$permission->id]);
+        });
+    }
 }
