@@ -3,17 +3,16 @@
 namespace App\Http\ApiRequests\Admin\User;
 
 use App\Base\ApiFormRequest\ApiFormRequest;
-use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 
-class StoreUserApiRequest extends ApiFormRequest
+class UserDeleteApiRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return Gate::allows('create_user');
+        return Gate::allows('delete_user');
     }
 
     /**
@@ -23,6 +22,8 @@ class StoreUserApiRequest extends ApiFormRequest
      */
     public function rules(): array
     {
-        return User::rules();
+        return [
+            //
+        ];
     }
 }

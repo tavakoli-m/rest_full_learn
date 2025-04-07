@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\ApiRequests\Admin\User\StoreUserApiRequest;
 use App\Http\ApiRequests\Admin\User\UpdateUserApiRequest;
+use App\Http\ApiRequests\Admin\User\UserDeleteApiRequest;
+use App\Http\ApiRequests\Admin\User\UserIndexApiRequest;
+use App\Http\ApiRequests\Admin\User\UserShowApiRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\User\UserDetailsApiResource;
 use App\Http\Resources\UsersListApiResourceCollection;
@@ -21,7 +24,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(UserIndexApiRequest $request)
     {
         $result =  $this->userService->getAllUsers($request->all());
 
@@ -47,7 +50,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(UserShowApiRequest $request,User $user)
     {
         {
             $result =  $this->userService->getUser($user);
@@ -75,7 +78,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(UserDeleteApiRequest $request,User $user)
     {
         $result = $this->userService->deleteUser($user);
 
