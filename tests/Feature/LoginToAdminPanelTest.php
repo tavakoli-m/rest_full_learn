@@ -13,7 +13,16 @@ class LoginToAdminPanelTest extends TestCase
      */
     public function test_an_admin_can_login_to_admin_panel(): void
     {
-        $this->assertTrue(true);
-        $this->assertFalse(false);
+        $response = $this->post('/api/login',[
+            'email' => 'admin@gmail.com',
+            'password' => '12345678'
+        ]);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'data' => ['token']
+        ]);
+
     }
 }
