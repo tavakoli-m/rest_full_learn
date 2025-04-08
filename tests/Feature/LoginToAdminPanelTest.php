@@ -4,10 +4,14 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class LoginToAdminPanelTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected $seed = true;
     /**
      * A basic feature test example.
      */
