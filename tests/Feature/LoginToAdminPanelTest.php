@@ -15,7 +15,14 @@ class LoginToAdminPanelTest extends TestCase
     /**
      * A basic feature test example.
      */
-    public function test_an_admin_can_login_to_admin_panel(): void
+
+    public function test_login_validation(): void
+    {
+        $response = $this->post('/api/login');
+
+        $response->assertStatus(422);
+    }
+    public function test_an_admin_can_login_to_admin_panel_with_correct_data(): void
     {
         $response = $this->post('/api/login',[
             'email' => 'admin@gmail.com',
@@ -28,5 +35,15 @@ class LoginToAdminPanelTest extends TestCase
             'data' => ['token']
         ]);
 
+    }
+
+    public function test_an_admin_cannot_login_to_admin_panel_with_wrong_data(): void
+    {
+        $response = $this->post('/api/login',[
+            'email' => 'admin@gmail.com',
+            'password' => '123'
+        ]);
+
+        $response->assertStatus(401);
     }
 }
